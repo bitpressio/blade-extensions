@@ -8,19 +8,42 @@ use BitPress\BladeExtension\Exceptions\InvalidBladeExtension;
 
 class BladeExtensionServiceProvider extends ServiceProvider
 {
+    /**
+     * Bootstrap package services
+     *
+     * @return void
+     */
     public function boot()
     {
         $this->defineBladeExtensions();
+        if ($this->app->runningInConsole()) {
+            $this->defineCommands();
+        }
     }
 
+    /**
+     * Register package services
+     *
+     * @return void
+     */
     public function register()
     {
     }
 
     /**
-     * Registers Blade Extension directives and conditionals with the blade compiler
+     * Define package console commands
+     */
+    protected function defineCommands()
+    {
+        $this->commands([
+            Console\Commands\BladeExtensionMakeCommand::class,
+        ]);
+    }
+
+    /**
+     * Register Blade Extension directives and conditionals with the blade compiler
      *
-     * @return null
+     * @return void
      */
     protected function defineBladeExtensions()
     {
