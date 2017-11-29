@@ -1,0 +1,39 @@
+{
+    "name": "bitpress/blade-extensions",
+    "description": "Laravel Blade extension classes",
+    "keywords": [
+        "laravel",
+        "blade",
+        "bitpress"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paul Redmond",
+            "email": "paul@bitpress.io"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "^3.5",
+        "phpunit/phpunit": "^6.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "BitPress\\BladeExtension\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BitPress\\BladeExtension\\Test\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BitPress\\BladeExtension\\BladeExtensionServiceProvider"
+            ]
+        }
+    },
+    "prefer-stable": true
+}
