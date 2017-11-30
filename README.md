@@ -73,14 +73,14 @@ class CartExtension implements BladeExtension
 
 Note that Blade extension classes implement the `BladeExtension` contract, which includes `getDirectives()` and `getConditionals()`. Even if you don't plan on registering any conditionals, for example, you must implement the `getConditionals()` method and return an empty `array`.
 
-Your custom blade extension will be registered in the service container, so you can define a `__construct()` method and inject services from the container. The fact that Blade extensions are services allows you to group common code around your blade extensions, including those directives that depend on outside services that are registered in the container.
+Your custom blade extension will be registered in the [service container](https://laravel.com/docs/5.5/container), so you can define a `__construct()` method and inject services from the container. The fact that Blade extensions are services allows you to group common code around your blade extensions, including those directives that depend on outside services that are registered in the container.
 
 
 ### Registering a New Blade Service
 
-After you define a blade extension, you still need to register it in the service container and tag it properly so the `BladeExtensionServiceProvier` can define the PHP callables in the Blade compiler during `boot()`. Because registering blade extensions and tagging them manually can be somewhat tedious, this package provides a `BitPress\BladeExtension\Container\BladeRegistrar` class to define the extension in the container and tagging it properly.
+After you define a blade extension, you still need to register it in the service container and tag it properly so the `BladeExtensionServiceProvier` can define the PHP callables in the Blade compiler during `boot()`.
 
-To register your extension, you need to define it in a Service provider's `register()` method. For example, `App\Providers\AppServiceProvider`:
+This package provides a `BladeRegistrar` class to define the extension in the container and tagging it properly, for example, in `App\Providers\AppServiceProvider`:
 
 ```php
 use Illuminate\Support\ServiceProvider;
