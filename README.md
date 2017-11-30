@@ -120,7 +120,7 @@ Without the Blade extension registrar, this is how you'd define an extension man
 
 ```php
 $this->app->singleton(\App\Blade\CartExtension::class);
-$this->app->tag([\App\Blade\CartExtension::class], 'blade.extension');
+$this->app->tag(\App\Blade\CartExtension::class, 'blade.extension');
 ```
 
 The benefit of using the `BladeRegistrar` class is that it takes care of defining a consistent tag across any number of service providers and removes the boilerplate.
