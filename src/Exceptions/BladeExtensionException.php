@@ -2,4 +2,6 @@
 
 namespace BitPress\BladeExtension\Exceptions;
 
-class BladeExtensionException extends \Exception {}
+class BladeExtensionException extends \Exception
+{
+}
