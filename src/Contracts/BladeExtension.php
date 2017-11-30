@@ -5,7 +5,7 @@ namespace BitPress\BladeExtension\Contracts;
 interface BladeExtension
 {
     /**
-     * Get custom directives
+     * Register directives
      *
      * ```php
      * return [
@@ -18,7 +18,7 @@ interface BladeExtension
     public function getDirectives();
 
     /**
-     * Get custom conditional directives
+     * Register conditional directives
      *
      * ```php
      * return [
