@@ -116,6 +116,35 @@ public function register()
 }
 ```
 
+Without the Blade extension registrar, this is how you'd define an extension manually:
+
+```php
+$this->app->singleton(\App\Blade\CartExtension::class);
+$this->app->tag([\App\Blade\CartExtension::class], 'blade.extension');
+```
+
+The benefit of using the `BladeRegistrar` class is that it takes care of defining a consistent tag across any number of service providers and removes the boilerplate.
+
+### Registering Extensions with the Blade Compiler
+
+The way this package works is quite simple, here's how the `boot()` method actually gets all registered extensions and defines them with the Blade compiler:
+
+```php
+foreach ($this->app->tagged('blade.extension') as $extension) {
+    if (! $extension instanceof BladeExtension) {
+        throw new InvalidBladeExtension($extension);
+    }
+
+    foreach ($extension->getDirectives() as $name => $callable) {
+        $this->app['blade.compiler']->directive($name, $callable);
+    }
+
+    foreach ($extension->getConditionals() as $name => $callable) {
+        $this->app['blade.compiler']->if($name, $callable);
+    }
+}
+```
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
