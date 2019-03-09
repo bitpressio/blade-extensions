@@ -2,9 +2,9 @@
 
 namespace BitPress\BladeExtension;
 
-use Illuminate\Support\ServiceProvider;
 use BitPress\BladeExtension\Contracts\BladeExtension;
 use BitPress\BladeExtension\Exceptions\InvalidBladeExtension;
+use Illuminate\Support\ServiceProvider;
 
 class BladeExtensionServiceProvider extends ServiceProvider
 {
@@ -37,6 +37,7 @@ class BladeExtensionServiceProvider extends ServiceProvider
     {
         $this->commands([
             Console\Commands\BladeExtensionMakeCommand::class,
+            Console\Commands\BladeListCommand::class,
         ]);
     }
 
