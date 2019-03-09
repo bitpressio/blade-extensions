@@ -36,6 +36,8 @@ class BladeListCommand extends Command
 
     public function __construct(BladeCompiler $compiler)
     {
+        parent::__construct();
+        
         $this->compiler = $compiler;
     }
 
