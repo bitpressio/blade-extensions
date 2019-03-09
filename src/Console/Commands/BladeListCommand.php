@@ -4,6 +4,8 @@ namespace BitPress\BladeExtension\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Illuminate\View\Compilers\BladeCompiler;
+use ReflectionClass;
 use ReflectionFunction;
 
 class BladeListCommand extends Command
@@ -22,24 +24,29 @@ class BladeListCommand extends Command
      */
     protected $description = 'List registered custom blade directives.';
 
-    public function handle()
+    /**
+     * @var \Illuminate\View\Compilers\BladeCompiler
+     */
+    protected $compiler;
+
+    /**
+     * @var \ReflectionClass
+     */
+    protected $compilerReflection;
+
+    public function __construct(BladeCompiler $compiler)
     {
-        $directives = app('blade.compiler')->getCustomDirectives();
-        $columns = ['Directive', 'Type', 'Scope', 'File', 'Lines'];
-        $clazz = new \ReflectionClass(app('blade.compiler'));
-        // dd($clazz->getTraits());
-        $methods = collect($clazz->getMethods())->filter(function ($method) {
-            return $method->getName() !== 'compile' && Str::startsWith($method->getName(), 'compile');
-        });
+        $this->compiler = $compiler;
+    }
 
-        // dd($methods);
-
-        // dd(app('blade.compiler')->getCompilers());
-        $results = collect($directives)->map(function ($directive, $key) {
-            return $this->getDirectiveData($directive, $key);
-        });
-        
-        $this->table($columns, $results);
+    public function handle()
+    {       
+        $this->table(
+            ['Directive', 'Type', 'Scope', 'File', 'Lines'],
+            collect($this->compiler->getCustomDirectives())->map(function ($directive, $key) {
+                return $this->getDirectiveData($directive, $key);
+            })
+        );
     }
 
     protected function getDirectiveData($directive, $key)
@@ -67,5 +74,28 @@ class BladeListCommand extends Command
                 sprintf('%d to %d', $reflectDirective->getStartLine(), $reflectDirective->getEndLine()),
             ];
         }
+    }
+
+    protected function getInternalCompilerDefinitions()
+    {
+        // @todo Get the compile* methods
+        $methods = $this->getCompilerMethods();
+        // @todo Determine where they are defined (i.e., in a trait or on the class)
+    }
+
+    private function getCompilerMethods()
+    {
+        return collect($this->reflectCompiler()->getMethods())->filter(function ($method) {
+            return $method->getName() !== 'compile' && Str::startsWith($method->getName(), 'compile');
+        });
+    }
+
+    private function reflectCompiler()
+    {
+        if ($this->compilerReflection) {
+            return $this->compilerReflection;
+        }
+
+        return new ReflectionClass($this->compiler);
     }
 }
