@@ -98,6 +98,6 @@ class BladeListCommand extends Command
             return $this->compilerReflection;
         }
 
-        return new ReflectionClass($this->compiler);
+        return $this->compilerReflection = new ReflectionClass($this->compiler);
     }
 }
